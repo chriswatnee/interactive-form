@@ -6,6 +6,10 @@ const colorSelect = document.querySelector("#color");
 const colorOptions = colorSelect.querySelectorAll("option[data-theme]");
 const activitiesFieldset = document.querySelector("#activities");
 const activitiesCostParagraph = document.querySelector("#activities-cost");
+const paymentSelect = document.querySelector("#payment");
+const creditCardDiv = document.querySelector("#credit-card");
+const paypalDiv = document.querySelector("#paypal");
+const bitcoinDiv = document.querySelector("#bitcoin");
 
 // Set focus on name input field
 nameInput.focus();
@@ -58,4 +62,24 @@ activitiesFieldset.addEventListener("change", () => {
   }
   // Display total cost of activities
   activitiesCostParagraph.textContent = `Total: $${totalCost}`;
+});
+
+// Set payment select to credit card and hide other payment divs by default
+paymentSelect.value = "credit-card";
+paypalDiv.style.display = "none";
+bitcoinDiv.style.display = "none";
+
+// Listen for payment select change
+paymentSelect.addEventListener("change", () => {
+  const displayOrHidePaymentDiv = (paymentType, paymentDiv) => {
+    if (paymentSelect.value === paymentType) {
+      paymentDiv.style.display = "inherit";
+    } else {
+      paymentDiv.style.display = "none";
+    }
+  };
+  // Display only the seleected payment method div
+  displayOrHidePaymentDiv("credit-card", creditCardDiv);
+  displayOrHidePaymentDiv("paypal", paypalDiv);
+  displayOrHidePaymentDiv("bitcoin", bitcoinDiv);
 });
