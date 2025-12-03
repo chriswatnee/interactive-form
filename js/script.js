@@ -1,4 +1,6 @@
+const form = document.querySelector("form");
 const nameInput = document.querySelector("#name");
+const emailInput = document.querySelector("#email");
 const titleSelect = document.querySelector("#title");
 const otherJobRoleInput = document.querySelector("#other-job-role");
 const designSelect = document.querySelector("#design");
@@ -8,6 +10,9 @@ const activitiesFieldset = document.querySelector("#activities");
 const activitiesCostParagraph = document.querySelector("#activities-cost");
 const paymentSelect = document.querySelector("#payment");
 const creditCardDiv = document.querySelector("#credit-card");
+const ccNumInput = document.querySelector("#cc-num");
+const zipInput = document.querySelector("#zip");
+const cvvInput = document.querySelector("#cvv");
 const paypalDiv = document.querySelector("#paypal");
 const bitcoinDiv = document.querySelector("#bitcoin");
 
@@ -82,4 +87,39 @@ paymentSelect.addEventListener("change", () => {
   displayOrHidePaymentDiv("credit-card", creditCardDiv);
   displayOrHidePaymentDiv("paypal", paypalDiv);
   displayOrHidePaymentDiv("bitcoin", bitcoinDiv);
+});
+
+// Listen for form submit
+form.addEventListener("submit", (e) => {
+  let formError = false;
+  // The name input cannot be blank or empty
+  const isValidName = (name) => name.trim() !== "";
+  // The email input must contain a correctly formatted email address
+  const isValidEmail = (email) => /^[^@]+@[^@.]+\.[a-z]+$/i.test(email);
+  // There must be at least one activity selected
+  const activitySelected = () => {
+    const checkedCheckboxes = activitiesFieldset.querySelectorAll('input[type="checkbox"]:checked');
+    return checkedCheckboxes.length > 0;
+  };
+  // The credit card number input must contain a 13-16 digit number
+  const isValidCreditCard = (ccNum) => /^\d{13,16}$/.test(ccNum);
+  // The zip code input must contain a 5-digit number
+  const isValidZip = (zip) => /^\d{5}$/.test(zip);
+  // The CVV input must contain a 3-digit number
+  const isValidCVV = (cvv) => /^\d{3}$/.test(cvv);
+  // If name, email, or activity selection fails validation
+  if (!isValidName(nameInput.value) || !isValidEmail(emailInput.value) || !activitySelected()) {
+    formError = true;
+  }
+  // If credit card is the selected payment method
+  if (paymentSelect.value === "credit-card") {
+    // If credit card inputs fail validation
+    if (!isValidCreditCard(ccNumInput.value) || !isValidZip(zipInput.value) || !isValidCVV(cvvInput.value)) {
+      formError = true;
+    }
+  }
+  // Form submission prevented if form validation fails
+  if (formError) {
+    e.preventDefault();
+  }
 });
