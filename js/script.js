@@ -4,6 +4,8 @@ const otherJobRoleInput = document.querySelector("#other-job-role");
 const designSelect = document.querySelector("#design");
 const colorSelect = document.querySelector("#color");
 const colorOptions = colorSelect.querySelectorAll("option[data-theme]");
+const activitiesFieldset = document.querySelector("#activities");
+const activitiesCostParagraph = document.querySelector("#activities-cost");
 
 // Set focus on name input field
 nameInput.focus();
@@ -42,4 +44,18 @@ designSelect.addEventListener("change", () => {
       colorOption.disabled = true;
     }
   }
+});
+
+// Listen for activities fieldset change
+activitiesFieldset.addEventListener("change", () => {
+  // Select checked activity checkboxes
+  const checkedCheckboxes = activitiesFieldset.querySelectorAll('input[type="checkbox"]:checked');
+  let totalCost = 0;
+  // Calculate total cost of activities
+  for (let i = 0; i < checkedCheckboxes.length; i++) {
+    const dataCostStr = checkedCheckboxes[i].getAttribute("data-cost");
+    totalCost += parseInt(dataCostStr);
+  }
+  // Display total cost of activities
+  activitiesCostParagraph.textContent = `Total: $${totalCost}`;
 });
