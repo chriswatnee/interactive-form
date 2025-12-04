@@ -1,3 +1,4 @@
+// DOM element selections
 const form = document.querySelector("form");
 const nameInput = document.querySelector("#name");
 const emailInput = document.querySelector("#email");
@@ -94,6 +95,7 @@ paymentSelect.addEventListener("change", () => {
 // Listen for form submit
 form.addEventListener("submit", (e) => {
   let formError = false;
+  // Form input validation helper functions
   // The name input cannot be blank or empty
   const isValidName = (name) => name.trim() !== "";
   // The email input must contain a correctly formatted email address
@@ -121,21 +123,21 @@ form.addEventListener("submit", (e) => {
     element.parentElement.classList.remove("not-valid");
     element.parentElement.lastElementChild.style.display = "none";
   };
-  // If name fails validation
+  // Name validation
   if (!isValidName(nameInput.value)) {
     formError = true;
     displayError(nameInput);
   } else {
     hideError(nameInput);
   }
-  // If email fails validation
+  // Email validation
   if (!isValidEmail(emailInput.value)) {
     formError = true;
     displayError(emailInput);
   } else {
     hideError(emailInput);
   }
-  // If activity selection fails validation
+  // Activity selection validation
   if (!activitySelected()) {
     formError = true;
     displayError(activitiesBoxDiv);
@@ -144,21 +146,21 @@ form.addEventListener("submit", (e) => {
   }
   // If credit card is the selected payment method
   if (paymentSelect.value === "credit-card") {
-    // If credit card number fails validation
+    // Credit card number validation
     if (!isValidCreditCard(ccNumInput.value)) {
       formError = true;
       displayError(ccNumInput);
     } else {
       hideError(ccNumInput);
     }
-    // If zip fails validation
+    // Zip validation
     if (!isValidZip(zipInput.value)) {
       formError = true;
       displayError(zipInput);
     } else {
       hideError(zipInput);
     }
-    // If CVV fails validation
+    // CVV validation
     if (!isValidCVV(cvvInput.value)) {
       formError = true;
       displayError(cvvInput);
