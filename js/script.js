@@ -7,6 +7,7 @@ const designSelect = document.querySelector("#design");
 const colorSelect = document.querySelector("#color");
 const colorOptions = colorSelect.querySelectorAll("option[data-theme]");
 const activitiesFieldset = document.querySelector("#activities");
+const activitiesBoxDiv = activitiesFieldset.querySelector("#activities-box");
 const activityCheckboxes = activitiesFieldset.querySelectorAll('input[type="checkbox"]');
 const activitiesCostParagraph = document.querySelector("#activities-cost");
 const paymentSelect = document.querySelector("#payment");
@@ -108,15 +109,61 @@ form.addEventListener("submit", (e) => {
   const isValidZip = (zip) => /^\d{5}$/.test(zip);
   // The CVV input must contain a 3-digit number
   const isValidCVV = (cvv) => /^\d{3}$/.test(cvv);
-  // If name, email, or activity selection fails validation
-  if (!isValidName(nameInput.value) || !isValidEmail(emailInput.value) || !activitySelected()) {
+  // Display error helper function
+  const displayError = (element) => {
+    element.parentElement.classList.add("not-valid");
+    element.parentElement.classList.remove("valid");
+    element.parentElement.lastElementChild.style.display = "block";
+  };
+  // Hide error helper function
+  const hideError = (element) => {
+    element.parentElement.classList.add("valid");
+    element.parentElement.classList.remove("not-valid");
+    element.parentElement.lastElementChild.style.display = "none";
+  };
+  // If name fails validation
+  if (!isValidName(nameInput.value)) {
     formError = true;
+    displayError(nameInput);
+  } else {
+    hideError(nameInput);
+  }
+  // If email fails validation
+  if (!isValidEmail(emailInput.value)) {
+    formError = true;
+    displayError(emailInput);
+  } else {
+    hideError(emailInput);
+  }
+  // If activity selection fails validation
+  if (!activitySelected()) {
+    formError = true;
+    displayError(activitiesBoxDiv);
+  } else {
+    hideError(activitiesBoxDiv);
   }
   // If credit card is the selected payment method
   if (paymentSelect.value === "credit-card") {
-    // If credit card inputs fail validation
-    if (!isValidCreditCard(ccNumInput.value) || !isValidZip(zipInput.value) || !isValidCVV(cvvInput.value)) {
+    // If credit card number fails validation
+    if (!isValidCreditCard(ccNumInput.value)) {
       formError = true;
+      displayError(ccNumInput);
+    } else {
+      hideError(ccNumInput);
+    }
+    // If zip fails validation
+    if (!isValidZip(zipInput.value)) {
+      formError = true;
+      displayError(zipInput);
+    } else {
+      hideError(zipInput);
+    }
+    // If CVV fails validation
+    if (!isValidCVV(cvvInput.value)) {
+      formError = true;
+      displayError(cvvInput);
+    } else {
+      hideError(cvvInput);
     }
   }
   // Form submission prevented if form validation fails
