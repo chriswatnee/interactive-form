@@ -7,6 +7,7 @@ const designSelect = document.querySelector("#design");
 const colorSelect = document.querySelector("#color");
 const colorOptions = colorSelect.querySelectorAll("option[data-theme]");
 const activitiesFieldset = document.querySelector("#activities");
+const activityCheckboxes = activitiesFieldset.querySelectorAll('input[type="checkbox"]');
 const activitiesCostParagraph = document.querySelector("#activities-cost");
 const paymentSelect = document.querySelector("#payment");
 const creditCardDiv = document.querySelector("#credit-card");
@@ -123,3 +124,14 @@ form.addEventListener("submit", (e) => {
     e.preventDefault();
   }
 });
+
+// Add visible focus states to the activity checkboxes
+for (let i = 0; i < activityCheckboxes.length; i++) {
+  const activityCheckbox = activityCheckboxes[i];
+  activityCheckbox.addEventListener("focus", () => {
+    activityCheckbox.parentElement.classList.add("focus");
+  });
+  activityCheckbox.addEventListener("blur", () => {
+    activityCheckbox.parentElement.classList.remove("focus");
+  });
+}
